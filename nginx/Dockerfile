@@ -19,10 +19,11 @@ RUN ./configure --with-compat --add-dynamic-module=/usr/local/src/nginx-rtmp-mod
 
 FROM nginx:1.26.2-alpine3.20-slim
 
-RUN apk add --no-cache \
-    ffmpeg
-
 COPY --from=builder /usr/local/src/nginx-1.26.2/objs/ngx_rtmp_module.so /usr/lib/nginx/modules/ngx_rtmp_module.so
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 EXPOSE 1935
+
+COPY command.sh /command.sh
+RUN chmod +x /command.sh
+CMD [ "/command.sh" ]

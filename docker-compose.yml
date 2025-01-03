@@ -1,9 +1,18 @@
 version: '3.8'
 
 services:
-  rtmp:
-    build: .
+  nginx:
+    build: nginx
+    environment:
+      YOUTUBE_STREAM_KEY1: $YOUTUBE_STREAM_KEY1
+      YOUTUBE_STREAM_KEY2: $YOUTUBE_STREAM_KEY2
+      TWITCH_STREAM_KEY: $TWITCH_STREAM_KEY
     ports:
       - "1935:1935"
-    # volumes:
-    #   - ./nginx.conf:/etc/nginx/nginx.conf
+  ffmpeg:
+    build: ffmpeg
+    environment:
+      NGINX_HOST: nginx
+      NICONICO_STREAM_KEY: $NICONICO_STREAM_KEY
+    depends_on:
+      - nginx
